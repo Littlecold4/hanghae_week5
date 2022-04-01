@@ -33,5 +33,9 @@ public class Food {
         this.restaurantId=restaurantId;
         this.price = foodDto.getPrice();
     }
+    public Food(FoodDto foodDto){
+        this.name = foodDto.getName();
+        this.price = foodDto.getPrice();
+    }
 
 }

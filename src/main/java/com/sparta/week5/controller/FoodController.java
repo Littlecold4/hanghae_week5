@@ -3,27 +3,28 @@ package com.sparta.week5.controller;
 import com.sparta.week5.dto.FoodDto;
 import com.sparta.week5.model.Food;
 import com.sparta.week5.repository.FoodRepository;
+import com.sparta.week5.service.FoodService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 public class FoodController {
 
     private final FoodRepository foodRepository;
+    private final FoodService foodService;
 
-    @PostMapping("restaurent/{restaurantId}/food/register")
+    @PostMapping("/restaurant/{restaurantId}/food/register")
     public void registerFood(@PathVariable Long restaurantId,
                              @RequestBody List<FoodDto> foodDtos){
-        for(int i=0; i<foodDtos.size(); i++){
-            Food food = new Food(foodDtos.get(i),restaurantId);
-            foodRepository.save(food);
-        }
+        foodService.registerFood(foodDtos,restaurantId);
     }
 
-    @GetMapping("restaurent/{restaurantId}/foods")
+    @GetMapping("/restaurant/{restaurantId}/foods")
     public List<Food> readMenu(@PathVariable Long restaurantId){
         return  foodRepository.findAllByRestaurantId(restaurantId);
     }

@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 @Builder
 public class RestaurantDto {
-    private Long id;
     private String name;
     private int minOrderPrice;
     private int deliveryFee;
