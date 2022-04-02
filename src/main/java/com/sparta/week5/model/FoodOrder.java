@@ -23,9 +23,6 @@ public class FoodOrder {
     @Column(nullable = false)
     private int price;
 
-    @ManyToOne
-    @JoinColumn
-    private OrderList orderList;
 
     public FoodOrder(FoodOrderDto orderDto){
         this.name = orderDto.getName();

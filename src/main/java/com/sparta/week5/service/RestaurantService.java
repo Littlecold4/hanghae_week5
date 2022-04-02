@@ -6,6 +6,9 @@ import com.sparta.week5.repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
@@ -20,11 +23,27 @@ public class RestaurantService {
         int deliveryFee = restaurantDto.getDeliveryFee();
 
         Restaurant restaurant = new Restaurant(restaurantDto);
-        restaurant = checkRestaurantLimit(minOrderPrice, deliveryFee, restaurant);
+        checkRestaurantLimit(minOrderPrice, deliveryFee, restaurant);
         return restaurantRepository.save(restaurant);
     }
 
-    private Restaurant checkRestaurantLimit(int minOrderPrice, int deliveryFee, Restaurant restaurant) {
+    public List<Restaurant> availableRestaurants(int myX, int myY){
+        List<Restaurant> Restaurants = restaurantRepository.findAll();
+        List<Restaurant> availRestaurants = new ArrayList<>();
+        for (Restaurant restaurant : Restaurants) {
+            int restaurantX = restaurant.getPositionX();
+            int restaurantY = restaurant.getPositionY();
+            if (Math.abs(myX - restaurantX) + Math.abs(myY - restaurantY) <= 3) {
+                availRestaurants.add(restaurant);
+            }
+        }
+        return availRestaurants;
+    }
+
+
+
+
+    private void checkRestaurantLimit(int minOrderPrice, int deliveryFee, Restaurant restaurant) {
         if(minOrderPrice <1000 || minOrderPrice >100000){
              throw new IllegalArgumentException("하이");
         }
@@ -37,6 +56,5 @@ public class RestaurantService {
         if (deliveryFee % 500 != 0) {
             throw new IllegalArgumentException("하이");
         }
-        return restaurant;
     }
 }

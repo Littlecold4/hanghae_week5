@@ -5,10 +5,7 @@ import com.sparta.week5.model.OrderList;
 import com.sparta.week5.repository.OrderRepository;
 import com.sparta.week5.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +19,14 @@ public class OrderController {
     public OrderList order(@RequestBody OrderRequestDto requestDto){
 
         return orderService.readOrders(requestDto);
+    }
+
+    @PostMapping("/order/request/{x}/{y}")
+    public OrderList orderPlus(@RequestBody OrderRequestDto requestDto,
+                           @PathVariable int x,
+                           @PathVariable int y){
+
+        return orderService.readOrdersPlus(requestDto,x,y);
     }
 
     @GetMapping("/orders")
