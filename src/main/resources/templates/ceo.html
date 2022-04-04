@@ -1,10 +1,151 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link href="https://fonts.googleapis.com/css2?family=family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="basic.js"></script>
+    <title>배달의 민우</title>
+
+    <script th:inline="javascript">
+        var ownerId = [[${ownerId}]];
+    </script>
+    <script>
+
+        $(document).ready(function () {
+        })
+
+        function register(){
+            let name =$('#restaurant-name').val()
+            let minorderprice =$('#minorderprice').val()
+            let deliveryfee =$('#deliveryfee').val()
+            let positionX =$('#positionX').val()
+            let positionY =$('#positionY').val()
+            let data={"name":name, "minOrderPrice":minorderprice,"deliveryFee":deliveryfee,
+                "positionX":positionX,"positionY":positionY,"open":true,"ownerId":ownerId};
+            $.ajax({
+                type:"POST",
+                url:"/restaurant/register/"+ownerId,
+                contentType:"application/json",
+                data : JSON.stringify(data),
+                success: function (response){
+                    alert("등록완료");
+                    window.location.reload();
+                }
+            })
+        }
+
+        function showmyres(){
+            $('#restaurant-box').empty();
+            $.ajax({
+                type:"GET",
+                url:"/restaurants/"+ownerId,
+                success : function (response){
+                    for(let i =0; i<response.length; i++){
+                        let restaurant = response[i];
+                        let name = restaurant.name;
+                        let minorderprice = restaurant.minOrderPrice;
+                        let deliveryfee =restaurant.deliveryFee;
+                        let open = restaurant.open;
+                        let restaurantid = restaurant.id;
+                        let temp_html =``;
+                        if(open){
+                            console.log("opne")
+                            temp_html=`<div style="color: black"><h1>가게이름: ${name}</h1>
+                                        <p>최소 금액 :${minorderprice}원</p>
+                                        <p>기본 배달비 : ${deliveryfee}</p>
+                                        <p>open</p>
+                                        <button onclick="opennot(${restaurantid})">닫기</button></div>`
+                        }else{
+                            console.log("close")
+
+                            temp_html=`<div style="color: black"> <h1>가게이름 : ${name}</h1>
+                                        <p>최소 금액 :${minorderprice}원</p>
+                                        <p>기본 배달비 : ${deliveryfee}</p>
+                                        <p>close</p>
+                                        <button onclick="opennot(${restaurantid})">열기</button></div>`
+                        }
+                        $('#restaurant-box').append(temp_html);
+
+                    }
+                }
+            })
+        }
+
+        function opennot(id){
+            $.ajax({
+                type:"PUT",
+                url:"/restaurant/open/"+id,
+                success:function (response){
+                    window.location.reload();
+                }
+            })
+        }
+
+    </script>
 </head>
 <body>
+<div class="header" style="position:relative;">
+    <div id="header-title-login-user">
+        <span th:text="${admin_role}"></span> 의
+    </div>
+    <div id="header-title-select-shop">
+        나의 가게 관리
+    </div>
+    <div class="nav">\
+        <button onclick="$('#restaurant-info').show() ">가게 등록하기</button>
+        <button onclick="showmyres()">내가게 보기</button>
+    </div>
+    <div id="restaurant-info" style="display: none">
+        <input id="restaurant-name" placeholder="가게이름">
+        <input id="minorderprice" placeholder="최소 주문금액">
+        <input id="deliveryfee" placeholder="배달비">
+        <input id="positionX" placeholder="x좌표">
+        <input id="positionY" placeholder="y좌표">
+        <button onclick="register()">등록하기</button>
+    </div>
+    <div id="restaurant-box">
+    </div>
 
+    <form id="my_form" method="post" action="/user/logout">
+        <a id="logout-text" href="javascript:{}" onclick="document.getElementById('my_form').submit();">로그아웃</a>
+    </form>
+</div>
+<div class="nav">
+
+</div>
+<div id="see-area">
+    <div id="product-container">
+
+    </div>
+</div>
+<div id="search-area">
+    <div>
+        <input type="text" id="query">
+        <!-- <img src="images/icon-search.png" alt="">-->
+    </div>
+    <div id="search-result-box">
+
+    </div>
+    <div id="container" class="popup-container">
+        <div class="popup">
+            <button id="close" class="close">
+                X
+            </button>
+            <h1>⏰최저가 설정하기</h1>
+            <p>최저가를 설정해두면 선택하신 상품의 최저가가 떴을 때<br/> 표시해드려요!</p>
+            <div>
+                <input type="text" id="myprice" placeholder="200,000">원
+            </div>
+            <button class="cta" onclick="setMyprice()">설정하기</button>
+        </div>
+    </div>
+</div>
+<div th:if="${admin_role}" id="admin"></div>
 </body>
 </html>

@@ -28,6 +28,9 @@ public class OrderList {
     @Column(nullable = false)
     private int totalPrice;
 
+    @Column(nullable = false)
+    private String status;
+
     public OrderList(String restaurantName, List<FoodOrder> foods, int deliveryFee, int totalPrice){
         this.restaurantName = restaurantName;
         this.foods = foods;
@@ -39,5 +42,9 @@ public class OrderList {
         this.foods = orderDto.getFoods();
         this.deliveryFee = orderDto.getDeliveryFee();
         this.totalPrice = orderDto.getTotalPrice();
+        this.status = orderDto.getStatus();
+    }
+    public void update(OrderDto orderDto){
+        this.status = orderDto.getStatus();
     }
 }

@@ -32,14 +32,14 @@ public class UserService {
 
 // 패스워드 암호화
         String password = passwordEncoder.encode(requestDto.getPassword());
-        String email = requestDto.getEmail();
+        System.out.println(requestDto.isCEO());
 
 // 사용자 ROLE 확인
         UserRoleEnum role = UserRoleEnum.USER;
         if(requestDto.isCEO()){
             role = UserRoleEnum.CEO;
         }
-        User user = new User(username, password, email, role);
+        User user = new User(username, password, role);
         userRepository.save(user);
     }
 }

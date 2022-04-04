@@ -2,6 +2,7 @@ package com.sparta.week5.service;
 
 import com.sparta.week5.dto.FoodOrderDto;
 import com.sparta.week5.dto.FoodOrderRequestDto;
+import com.sparta.week5.dto.OrderDto;
 import com.sparta.week5.dto.OrderRequestDto;
 import com.sparta.week5.model.FoodOrder;
 import com.sparta.week5.model.OrderList;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -46,18 +48,19 @@ public class OrderService {
             quantity = foodOrderRequestDto.getQuantity();
             price = foodRepository.findByRestaurantIdAndId(restaurantId,foodOrderRequestDto.getId()).getPrice();
             String foodName =  foodRepository.findByRestaurantIdAndId(restaurantId,foodOrderRequestDto.getId()).getName();
-            FoodOrderDto orderDto= new FoodOrderDto();
-            orderDto.setName(foodName);
-            orderDto.setPrice(price*quantity);
-            orderDto.setQuantity(quantity);
+            FoodOrderDto foodorderDto= new FoodOrderDto();
+            foodorderDto.setName(foodName);
+            foodorderDto.setPrice(price*quantity);
+            foodorderDto.setQuantity(quantity);
             totalprice += foodOrderRequestDto.getQuantity() * price;
-            FoodOrder foodOrder = new FoodOrder(orderDto);
+            FoodOrder foodOrder = new FoodOrder(foodorderDto);
             foodOrderRepository.save(foodOrder);
             foodOrders.add(foodOrder);
         }
         OrderLimit(quantity, totalprice, restaurantId);
         totalprice += deliveryFee;
-        OrderList orderList = new OrderList(restaurantName,foodOrders,deliveryFee,totalprice);
+        OrderDto orderDto = new OrderDto(restaurantName,foodOrders,deliveryFee,totalprice);
+        OrderList orderList = new OrderList(orderDto);
 
 
         orderRepository.save(orderList);
@@ -85,12 +88,12 @@ public class OrderService {
             quantity = foodOrderRequestDto.getQuantity();
             price = foodRepository.findByRestaurantIdAndId(restaurantId,foodOrderRequestDto.getId()).getPrice();
             String foodName =  foodRepository.findByRestaurantIdAndId(restaurantId,foodOrderRequestDto.getId()).getName();
-            FoodOrderDto orderDto= new FoodOrderDto();
-            orderDto.setName(foodName);
-            orderDto.setPrice(price*quantity);
-            orderDto.setQuantity(quantity);
+            FoodOrderDto foodorderDto= new FoodOrderDto();
+            foodorderDto.setName(foodName);
+            foodorderDto.setPrice(price*quantity);
+            foodorderDto.setQuantity(quantity);
             totalprice += foodOrderRequestDto.getQuantity() * price;
-            FoodOrder foodOrder = new FoodOrder(orderDto);
+            FoodOrder foodOrder = new FoodOrder(foodorderDto);
             foodOrderRepository.save(foodOrder);
             foodOrders.add(foodOrder);
         }
@@ -100,6 +103,38 @@ public class OrderService {
 
 
         orderRepository.save(orderList);
+        return orderList;
+    }
+
+    // @Transactional
+    //    public Restaurant openUpdate(Long id){
+    //        Restaurant restaurant = restaurantRepository.findRestaurantById(id);
+    //        RestaurantDto restaurantDto = RestaurantDto.builder()
+    //                        .id(restaurant.getId())
+    //                        .name(restaurant.getName())
+    //                        .minOrderPrice(restaurant.getMinOrderPrice())
+    //                        .deliveryFee(restaurant.getDeliveryFee())
+    //                        .positionX(restaurant.getPositionX())
+    //                        .positionY(restaurant.getPositionY())
+    //                        .open(!restaurant.isOpen())
+    //                        .build();
+    //        restaurant.update(restaurantDto);
+    //        return  restaurant;
+    //    }
+
+    public OrderList takeoverOrder(Long orderId){
+        OrderList orderList = orderRepository.findById(orderId).orElseThrow(
+                () ->new NullPointerException("오류요 오류")
+        );
+        OrderDto orderDto;
+        if(orderList.getStatus().equals("주문 접수 중")) {
+            orderDto = new OrderDto(orderList, "주문접수 완료");
+        }else if(orderList.getStatus().equals("주문접수 완료")){
+            orderDto = new OrderDto(orderList, "배달중");
+        }else{
+            orderDto = new OrderDto(orderList, "배달완료");
+        }
+        orderList.update(orderDto);
         return orderList;
     }
 

@@ -33,6 +33,9 @@ public class Restaurant {
     @Column(nullable = false)
     private boolean open;
 
+    @Column(nullable = false)
+    private Long ownerId;
+
     public Restaurant(RestaurantDto restaurantDto){
         this.name = restaurantDto.getName();
         this.minOrderPrice=restaurantDto.getMinOrderPrice();
@@ -40,6 +43,7 @@ public class Restaurant {
         this.positionX = restaurantDto.getPositionX();
         this.positionY = restaurantDto.getPositionY();
         this.open = restaurantDto.isOpen();
+        this.ownerId = restaurantDto.getOwnerId();
     }
     public long update(RestaurantDto restaurantDto){
         this.open = restaurantDto.isOpen();

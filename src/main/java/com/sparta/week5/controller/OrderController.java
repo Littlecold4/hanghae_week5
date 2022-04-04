@@ -36,4 +36,9 @@ public class OrderController {
     public List<OrderList> readOrders(){
         return orderRepository.findAll();
     }
+
+    @PutMapping("/order/{orderid}")
+    public OrderList takeoverOrder(@PathVariable Long orderid){
+        return orderService.takeoverOrder(orderid);
+    }
 }

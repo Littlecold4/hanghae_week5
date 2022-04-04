@@ -15,5 +15,5 @@ public class RestaurantDto {
     private int positionX;
     private int positionY;
     private boolean open = true;
-    String category;
+    private Long ownerId;
 }

@@ -32,6 +32,14 @@ public class RestaurantService {
         checkRestaurantLimit(minOrderPrice, deliveryFee, restaurant);
         return restaurantRepository.save(restaurant);
     }
+    public Restaurant registerRestaurant2(RestaurantDto restaurantDto){
+        int minOrderPrice = restaurantDto.getMinOrderPrice();
+        int deliveryFee = restaurantDto.getDeliveryFee();
+
+        Restaurant restaurant = new Restaurant(restaurantDto);
+        checkRestaurantLimit(minOrderPrice, deliveryFee, restaurant);
+        return restaurantRepository.save(restaurant);
+    }
 
     public List<Restaurant> availableRestaurants(int myX, int myY){
         List<Restaurant> Restaurants = restaurantRepository.findAll();

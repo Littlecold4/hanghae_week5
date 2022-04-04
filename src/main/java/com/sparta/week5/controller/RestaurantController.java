@@ -1,10 +1,12 @@
 package com.sparta.week5.controller;
 
 import com.sparta.week5.dto.RestaurantDto;
+import com.sparta.week5.login.UserRoleEnum;
 import com.sparta.week5.model.Restaurant;
 import com.sparta.week5.repository.RestaurantRepository;
 import com.sparta.week5.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +22,17 @@ public class RestaurantController {
     public Restaurant registerRestaurant(@RequestBody RestaurantDto restaurantDto){
         return restaurantService.registerRestaurant(restaurantDto);
     }
+    @PostMapping("/restaurant/register/{ownerId}")
+    public Restaurant registerRestaurant2(@RequestBody RestaurantDto restaurantDto){
+        return restaurantService.registerRestaurant2(restaurantDto);
+    }
 
-//    @Secured(value = UserRoleEnum.Authority.USER)
+    @GetMapping("/restaurants/{ownerid}")
+    public List<Restaurant> showMyShop(@PathVariable Long ownerid){
+        return restaurantRepository.findAllByOwnerId(ownerid);
+    }
+
+    @Secured(value = UserRoleEnum.Authority.USER)
     @GetMapping("/restaurants")
     public List<Restaurant> readRestaurant(){
         return restaurantRepository.findAll();

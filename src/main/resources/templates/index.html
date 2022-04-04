@@ -13,7 +13,44 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="basic.js"></script>
     <title>배달의 민우</title>
+
 </head>
+<script>
+    $(document).ready(function () {
+    })
+
+    function readRestaurant(){
+    $.ajax({
+        type:"GET",
+        url:"/restaurants",
+        success : function (response){
+            for(let i =0; i<response.length; i++){
+                let restaurant = response[i];
+                let name = restaurant.name;
+                let minorderprice = restaurant.minOrderPrice;
+                let deliveryfee =restaurant.deliveryFee;
+                let open = restaurant.open;
+                let temp_html =``;
+                if(open){
+                    temp_html=`<div style="color: black"><h1>가게이름: ${name}</h1>
+                                        <p>최소 금액 :${minorderprice}원</p>
+                                        <p>기본 배달비 : ${deliveryfee}</p>
+                                        <p>open</p>
+                                      `
+                }else{
+                    temp_html=`<div style="color: grey"> <h1>가게이름 : ${name}</h1>
+                                        <p>최소 금액 :${minorderprice}원</p>
+                                        <p>기본 배달비 : ${deliveryfee}</p>
+                                        <p>close</p>
+                                     `
+                }
+                $('#restaurant-box').append(temp_html);
+
+            }
+        }
+    })
+    }
+</script>
 <body>
 <div class="header" style="position:relative;">
     <div id="header-title-login-user">
@@ -27,41 +64,16 @@
         <a id="logout-text" href="javascript:{}" onclick="document.getElementById('my_form').submit();">로그아웃</a>
     </form>
 </div>
-<div class="nav">
-    <div class="nav-see active">
-        모아보기
-    </div>
-    <div class="nav-search">
-        탐색하기
-    </div>
+<div>
+    <button onclick="readRestaurant()">모든 음식점 보기</button>
+    <button>열린 음식점만 보기</button>
+    <button>배달 가능 음식점만 보기</button>
 </div>
-<div id="see-area">
-    <div id="product-container">
+
+
+    <div id="restaurant-box">
 
     </div>
-</div>
-<div id="search-area">
-    <div>
-        <input type="text" id="query">
-        <!-- <img src="images/icon-search.png" alt="">-->
-    </div>
-    <div id="search-result-box">
 
-    </div>
-    <div id="container" class="popup-container">
-        <div class="popup">
-            <button id="close" class="close">
-                X
-            </button>
-            <h1>⏰최저가 설정하기</h1>
-            <p>최저가를 설정해두면 선택하신 상품의 최저가가 떴을 때<br/> 표시해드려요!</p>
-            <div>
-                <input type="text" id="myprice" placeholder="200,000">원
-            </div>
-            <button class="cta" onclick="setMyprice()">설정하기</button>
-        </div>
-    </div>
-</div>
-<div th:if="${admin_role}" id="admin"></div>
 </body>
 </html>

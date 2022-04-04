@@ -13,10 +13,13 @@ public class HomeController {
     public String home(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         model.addAttribute("username", userDetails.getUsername());
 
+        System.out.println(userDetails.getUser().getRole());
         if (userDetails.getUser().getRole() == UserRoleEnum.USER) {
             model.addAttribute("admin_role", "손님");
             return "index";
         }else{
+            model.addAttribute("admin_role", "사장님");
+            model.addAttribute("ownerId",userDetails.getUser().getId());
             return "ceo";
         }
 
