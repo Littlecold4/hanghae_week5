@@ -23,19 +23,27 @@ public class Food {
     @Column(nullable = false)
     private int price;
 
-    public Food(String name, Long restaurantId,int price){
+    @Column(nullable = false)
+    private boolean open;
+
+    @Column(nullable = false)
+    private String category;
+
+    public Food(String name, Long restaurantId,int price, String category){
         this.name = name;
         this.restaurantId=restaurantId;
         this.price = price;
+        this.category= category;
     }
     public Food(FoodDto foodDto, Long restaurantId){
         this.name = foodDto.getName();
         this.restaurantId=restaurantId;
         this.price = foodDto.getPrice();
-    }
-    public Food(FoodDto foodDto){
-        this.name = foodDto.getName();
-        this.price = foodDto.getPrice();
+        this.category = foodDto.getCategory();
     }
 
+    public long update(FoodDto foodDto){
+        this.open = foodDto.isOpen();
+        return id;
+    }
 }

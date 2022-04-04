@@ -9,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,4 +29,13 @@ public class FoodController {
     public List<Food> readMenu(@PathVariable Long restaurantId){
         return  foodRepository.findAllByRestaurantId(restaurantId);
     }
+
+    @PutMapping("/restaurant/{restaurantId}/{id}/food/open")
+    public List<Food> readOpenFood(@PathVariable Long restaurantId,
+                                   @PathVariable Long id){
+        return foodService.UpdateOpenFood(restaurantId,id);
+    }
+
+//    @PutMapping("/restaurant/food/open")
+//    public Food openornot
 }

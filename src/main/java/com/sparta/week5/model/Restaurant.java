@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -29,11 +30,19 @@ public class Restaurant {
     @Column(nullable = false)
     private int positionY;
 
+    @Column(nullable = false)
+    private boolean open;
+
     public Restaurant(RestaurantDto restaurantDto){
         this.name = restaurantDto.getName();
         this.minOrderPrice=restaurantDto.getMinOrderPrice();
         this.deliveryFee=restaurantDto.getDeliveryFee();
         this.positionX = restaurantDto.getPositionX();
         this.positionY = restaurantDto.getPositionY();
+        this.open = restaurantDto.isOpen();
+    }
+    public long update(RestaurantDto restaurantDto){
+        this.open = restaurantDto.isOpen();
+        return id;
     }
 }

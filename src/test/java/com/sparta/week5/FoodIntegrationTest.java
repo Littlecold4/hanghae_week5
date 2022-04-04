@@ -149,7 +149,7 @@ class FoodIntegrationTest {
                     "/restaurant/" + restaurantId + "/food/register",
                     request,
                     Object.class);
-            System.out.println(response.getBody());
+            System.out.println(response);
 
 
             // then

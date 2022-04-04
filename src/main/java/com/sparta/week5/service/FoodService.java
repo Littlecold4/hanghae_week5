@@ -1,6 +1,7 @@
 package com.sparta.week5.service;
 
 import com.sparta.week5.dto.FoodDto;
+import com.sparta.week5.dto.RestaurantDto;
 import com.sparta.week5.model.Food;
 import com.sparta.week5.repository.FoodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,23 +23,38 @@ public class FoodService {
 
     @Transactional(rollbackOn = Exception.class)
     public void registerFood(List<FoodDto> foodDtos, Long restaurantId) {
-        for(int i=0; i<foodDtos.size(); i++){
+        for (FoodDto foodDto : foodDtos) {
 //            foodService.registerFood(foodDtos.get(i),restaurantId);
-            FoodDto foodDto = foodDtos.get(i);
             int price = foodDto.getPrice();
             Optional<Food> foundResult;
             if (price < 100 || price > 1000000) {
                 throw new IllegalArgumentException("오류1");
             }
-            if(price%100 !=0){
+            if (price % 100 != 0) {
                 throw new IllegalArgumentException("오류2");
             }
-            foundResult =foodRepository.findByRestaurantIdAndName(restaurantId,foodDto.getName());
-            if(foundResult.isPresent()){
+            foundResult = foodRepository.findByRestaurantIdAndName(restaurantId, foodDto.getName());
+            if (foundResult.isPresent()) {
                 throw new IllegalArgumentException("중복!!!");
             }
-            Food food = new Food(foodDto,restaurantId);
+            Food food = new Food(foodDto, restaurantId);
             foodRepository.save(food);
         }
+    }
+
+    public List<Food> UpdateOpenFood(Long restaurantId,Long id){
+        List<Food> foods = foodRepository.findAllByRestaurantId(restaurantId);
+        for(int i=0; i<foods.size(); i++){
+            Food food = foods.get(i);
+            if(food.getId() == id) {
+                FoodDto foodDto = FoodDto.builder()
+                        .name(food.getName())
+                        .price(food.getPrice())
+                        .open(!food.isOpen())
+                        .build();
+                food.update(foodDto);
+            }
+        }
+        return foods;
     }
 }

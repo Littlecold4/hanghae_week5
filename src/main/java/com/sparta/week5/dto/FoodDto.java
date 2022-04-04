@@ -10,4 +10,6 @@ import lombok.Setter;
 public class FoodDto {
     private String name;
     private int price;
+    private  boolean open =true;
+    private String category;
 }
