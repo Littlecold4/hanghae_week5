@@ -370,6 +370,7 @@ class OrderListIntegrationTest {
         assertEquals(registeredRestaurant.name, orderDto.restaurantName);
 
         // 음식 주문 확인
+        System.out.println(orderDto.getFoods());
         assertEquals(3, orderDto.foods.size());
         // 음식1 주문 확인
         FoodOrderDto foodOrder1 = orderDto.foods.stream()

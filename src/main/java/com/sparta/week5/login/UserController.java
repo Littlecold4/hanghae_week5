@@ -1,8 +1,11 @@
 package com.sparta.week5.login;
 
 
+import com.sparta.week5.login.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -26,6 +29,12 @@ public class UserController {
     @GetMapping("/user/signup")
     public String signup() {
         return "signup";
+    }
+
+    @GetMapping("/restaurant/register/food/{restaurantId}")
+    public String menu(Model model,Long restaurantId) {
+        model.addAttribute("restaurantId",restaurantId);
+        return "menu";
     }
 
     // 회원 가입 요청 처리

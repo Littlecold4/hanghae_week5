@@ -60,7 +60,8 @@
                                         <p>최소 금액 :${minorderprice}원</p>
                                         <p>기본 배달비 : ${deliveryfee}</p>
                                         <p>open</p>
-                                        <button onclick="opennot(${restaurantid})">닫기</button></div>`
+                                        <button onclick="opennot(${restaurantid})">닫기</button></div>
+                                        <button onclick="regiterFood(${restaurantid})">닫기</button></div>`
                         }else{
                             console.log("close")
 
@@ -68,13 +69,18 @@
                                         <p>최소 금액 :${minorderprice}원</p>
                                         <p>기본 배달비 : ${deliveryfee}</p>
                                         <p>close</p>
-                                        <button onclick="opennot(${restaurantid})">열기</button></div>`
+                                        <button onclick="opennot(${restaurantid})">열기</button></div>
+                                        <button onclick="regiterFood(${restaurantid})">닫기</button></div>`
                         }
                         $('#restaurant-box').append(temp_html);
 
                     }
                 }
             })
+        }
+
+        function regiterFood(Long id){
+
         }
 
         function opennot(id){
