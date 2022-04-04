@@ -42,8 +42,7 @@ public class Food {
         this.category = foodDto.getCategory();
     }
 
-    public long update(FoodDto foodDto){
+    public void update(FoodDto foodDto){
         this.open = foodDto.isOpen();
-        return id;
     }
 }

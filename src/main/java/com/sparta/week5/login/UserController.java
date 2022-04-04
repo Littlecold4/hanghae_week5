@@ -1,12 +1,11 @@
 package com.sparta.week5.login;
 
 
-import com.sparta.week5.login.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -32,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/restaurant/register/food/{restaurantId}")
-    public String menu(Model model,Long restaurantId) {
+    public String menu(Model model,@PathVariable Long restaurantId) {
         model.addAttribute("restaurantId",restaurantId);
         return "menu";
     }

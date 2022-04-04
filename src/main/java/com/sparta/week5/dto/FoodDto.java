@@ -8,8 +8,9 @@ import lombok.Setter;
 @Setter
 @Builder
 public class FoodDto {
+    private Long id;
     private String name;
     private int price;
-    private  boolean open =true;
+    private  boolean open;
     private String category;
 }

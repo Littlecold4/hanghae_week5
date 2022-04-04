@@ -12,21 +12,84 @@
     <title>메뉴 등록하기</title>
 
     <script th:inline="javascript">
-        var retaurantId = [[${restaurantId}]];
+        var restaurantId = [[${restaurantId}]];
     </script>
-<!--    <script>-->
-<!--        function registerMenu(retaurantId){-->
-<!--            $.ajax({-->
-<!--                type:"POST",-->
-<!--                url:""-->
-<!--            })-->
-<!--        }-->
-<!--    </script>-->
+    <script>
+        $(document).ready(function () {
+            showmenu();
+        })
+
+        function registerMenu(){
+            let foodname = $('#foodname').val();
+            let foodprice = $('#foodprice').val();
+            let category =$('#category').val();
+            let data = [{"restaurantId":restaurantId, "name":foodname, "price":foodprice,
+            "open":true,"category":category}];
+            $.ajax({
+                type:"POST",
+                url:"/restaurant/"+restaurantId+"/food/register",
+                contentType:"application/json",
+                data : JSON.stringify(data),
+                success:function(response){
+                    alert("등록완료");
+                    window.location.reload();
+                }
+            })
+        }
+
+        function showmenu(){
+            $.ajax({
+                type:"GET",
+                url:"/restaurant/"+restaurantId+"/foods",
+                success:function (response){
+                    for(let i=0; i<response.length;i++){
+                        let food = response[i];
+                        let foodid = food.id;
+                        let foodname = food.name;
+                        let foodprice=food.price;
+                        let foodopen = food.open;
+                        let category = food.category;
+                        console.log(food);
+                        let temp_html=``
+                        if(foodopen){
+                            temp_html =`<div>
+                                            <h2>${foodname}</h2>
+                                            <p>${foodprice}</p>
+                                            <p>${category}</p>
+                                            <button onclick="opennot(${foodid})">닫기</button></div>
+                                        </div>`
+                        }else{
+                            temp_html=`<div style ="color: gray">
+                                            <h2>${foodname}</h2>
+                                            <p>${foodprice}</p>
+                                            <p>${category}</p>
+                                            <button onclick="opennot(${foodid})">열기</button></div>
+                                        </div>`;
+                        }
+                        $('#menu-box').append(temp_html);
+                    }
+                }
+            })
+        }
+
+        function opennot(id){
+            $.ajax({
+                type:"PUT",
+                url:"/restaurant/"+restaurantId+"/"+id+"/food/open",
+                success:function (response){
+                    window.location.reload();
+                }
+            })
+        }
+
+    </script>
 </head>
+
 <body>
 <input placeholder="음식이름" id="foodname">
 <input placeholder="음식가격" id="foodprice">
 <input placeholder="카테고리" id="category">
-<button onnclick="registerMenu()">등록</button>
+<button onclick="registerMenu()">등록</button>
+<diu id="menu-box"></diu>
 </body>
 </html>

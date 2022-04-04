@@ -48,9 +48,11 @@ public class FoodService {
             Food food = foods.get(i);
             if(food.getId() == id) {
                 FoodDto foodDto = FoodDto.builder()
+                        .id(food.getId())
                         .name(food.getName())
                         .price(food.getPrice())
                         .open(!food.isOpen())
+                        .category(food.getCategory())
                         .build();
                 food.update(foodDto);
             }
