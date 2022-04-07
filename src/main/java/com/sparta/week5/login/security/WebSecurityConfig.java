@@ -43,6 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/foods/**").permitAll()
                 .antMatchers("/order/**").permitAll()
                 .antMatchers("/orders/**").permitAll()
+                .antMatchers("/register/option").permitAll()
 // 그 외 어떤 요청이든 '인증'
                 .anyRequest().authenticated()
                 .and()

@@ -1,10 +1,12 @@
 package com.sparta.week5.model;
 
 import com.sparta.week5.dto.FoodDto;
+import com.sparta.week5.dto.OptionDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -29,17 +31,23 @@ public class Food {
     @Column(nullable = false)
     private String category;
 
-    public Food(String name, Long restaurantId,int price, String category){
-        this.name = name;
-        this.restaurantId=restaurantId;
-        this.price = price;
-        this.category= category;
-    }
+    @OneToMany
+    @JoinColumn(name="foodId")
+    private List<Options> Options;
+
+//    @ManyToOne
+//    @JoinColumn
+//    private Restaurant restaurant;
+
     public Food(FoodDto foodDto, Long restaurantId){
         this.name = foodDto.getName();
         this.restaurantId=restaurantId;
         this.price = foodDto.getPrice();
         this.category = foodDto.getCategory();
+        this.Options = foodDto.getOptions();
+    }
+    public Food(Options options){
+        this.Options = (List<com.sparta.week5.model.Options>) options;
     }
 
     public void update(FoodDto foodDto){

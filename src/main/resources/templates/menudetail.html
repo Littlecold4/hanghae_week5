@@ -1,42 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+    <title>Title</title>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/style.css">
-    <title>메뉴 등록하기</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script th:inline="javascript">
-        var restaurantId = [[${restaurantId}]];
+        var restaurantId = [[${restaurant.id}]];
     </script>
     <script>
+
+
         $(document).ready(function () {
             showmenu();
         })
-
-        function registerMenu(){
-            let foodname = $('#foodname').val();
-            let foodprice = $('#foodprice').val();
-            let category =$('#category').val();
-            let data = [{"restaurantId":restaurantId, "name":foodname, "price":foodprice,
-            "open":true,"category":category}];
-            $.ajax({
-                type:"POST",
-                url:"/restaurant/"+restaurantId+"/food/register",
-                contentType:"application/json",
-                data : JSON.stringify(data),
-                success:function(response){
-                    alert("등록완료");
-                    window.location.reload();
-                }
-            })
-        }
-
         function showmenu(){
             $.ajax({
                 type:"GET",
@@ -44,7 +23,6 @@
                 success:function (response){
                     for(let i=0; i<response.length;i++){
                         let food = response[i];
-                        let foodid = food.id;
                         let foodname = food.name;
                         let foodprice=food.price;
                         let foodopen = food.open;
@@ -57,14 +35,12 @@
                                             <h2>${foodname}</h2>
                                             <p>${foodprice}</p>
                                             <p>${category}</p>
-                                            <button onclick="opennot(${foodid})">닫기</button></div>
                                         </div>`
                         }else{
                             temp_html=`<div style ="color: gray">
                                             <h2>${foodname}</h2>
                                             <p>${foodprice}</p>
                                             <p>${category}</p>
-                                            <button onclick="opennot(${foodid})">열기</button></div>
                                         </div>`;
                         }
                         $('#menu-box').append(temp_html);
@@ -72,25 +48,14 @@
                 }
             })
         }
-
-        function opennot(id){
-            $.ajax({
-                type:"PUT",
-                url:"/restaurant/"+restaurantId+"/"+id+"/food/open",
-                success:function (response){
-                    window.location.reload();
-                }
-            })
-        }
-
     </script>
 </head>
-
 <body>
-<input placeholder="음식이름" id="foodname">
-<input placeholder="음식가격" id="foodprice">
-<input placeholder="카테고리" id="category">
-<button onclick="registerMenu()">등록</button>
-<diu id="menu-box"></diu>
+<h1 th:text="${restaurant.name}"></h1>
+<p>x좌표:</p>
+<p th:text="${restaurant.positionX}"></p>
+<p>y좌표:</p>
+<p th:text="${restaurant.positionY}"></p>
+<div id="menu-box"></div>
 </body>
 </html>

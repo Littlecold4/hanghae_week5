@@ -61,8 +61,6 @@ public class OrderService {
         totalprice += deliveryFee;
         OrderDto orderDto = new OrderDto(restaurantName,foodOrders,deliveryFee,totalprice);
         OrderList orderList = new OrderList(orderDto);
-
-
         orderRepository.save(orderList);
         return orderList;
     }
@@ -94,7 +92,7 @@ public class OrderService {
             foodorderDto.setQuantity(quantity);
             totalprice += foodOrderRequestDto.getQuantity() * price;
             FoodOrder foodOrder = new FoodOrder(foodorderDto);
-            foodOrderRepository.save(foodOrder);
+//            foodOrderRepository.save(foodOrder);
             foodOrders.add(foodOrder);
         }
         OrderLimit(quantity, totalprice, restaurantId);

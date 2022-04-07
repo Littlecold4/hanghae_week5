@@ -29,7 +29,6 @@ public class UserService {
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자 ID 가 존재합니다.");
         }
-
 // 패스워드 암호화
         String password = passwordEncoder.encode(requestDto.getPassword());
         System.out.println(requestDto.isCEO());

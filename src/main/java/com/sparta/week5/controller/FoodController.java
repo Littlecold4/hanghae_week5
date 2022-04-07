@@ -31,7 +31,7 @@ public class FoodController {
     }
 
     @PutMapping("/restaurant/{restaurantId}/{id}/food/open")
-    public List<Food> readOpenFood(@PathVariable Long restaurantId,
+    public Food readOpenFood(@PathVariable Long restaurantId,
                                    @PathVariable Long id){
         return foodService.UpdateOpenFood(restaurantId,id);
     }

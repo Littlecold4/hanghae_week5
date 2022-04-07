@@ -1,12 +1,10 @@
 package com.sparta.week5.controller;
 
 import com.sparta.week5.dto.OrderRequestDto;
-import com.sparta.week5.login.UserRoleEnum;
 import com.sparta.week5.model.OrderList;
 import com.sparta.week5.repository.OrderRepository;
 import com.sparta.week5.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

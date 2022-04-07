@@ -1,8 +1,12 @@
 package com.sparta.week5.dto;
 
+import com.sparta.week5.model.Restaurant;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import com.sparta.week5.model.Options;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,4 +17,6 @@ public class FoodDto {
     private int price;
     private  boolean open;
     private String category;
+    private Restaurant restaurant;
+    private List<Options> Options;
 }

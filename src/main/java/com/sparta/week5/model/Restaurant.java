@@ -1,11 +1,13 @@
 package com.sparta.week5.model;
 
+import com.sparta.week5.dto.OptionDto;
 import com.sparta.week5.dto.RestaurantDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import com.sparta.week5.model.Options;
 
 @NoArgsConstructor
 @Getter
@@ -36,6 +38,10 @@ public class Restaurant {
     @Column(nullable = false)
     private Long ownerId;
 
+    @OneToMany
+    @JoinColumn(name="RestaurantId")
+    private List<Options> Options;
+
     public Restaurant(RestaurantDto restaurantDto){
         this.name = restaurantDto.getName();
         this.minOrderPrice=restaurantDto.getMinOrderPrice();
@@ -44,6 +50,11 @@ public class Restaurant {
         this.positionY = restaurantDto.getPositionY();
         this.open = restaurantDto.isOpen();
         this.ownerId = restaurantDto.getOwnerId();
+
+    }
+
+    public Restaurant(Options options){
+        this.Options = (List<com.sparta.week5.model.Options>) options;
     }
     public long update(RestaurantDto restaurantDto){
         this.open = restaurantDto.isOpen();

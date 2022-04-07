@@ -42,21 +42,20 @@ public class FoodService {
         }
     }
 
-    public List<Food> UpdateOpenFood(Long restaurantId,Long id){
-        List<Food> foods = foodRepository.findAllByRestaurantId(restaurantId);
-        for(int i=0; i<foods.size(); i++){
-            Food food = foods.get(i);
-            if(food.getId() == id) {
-                FoodDto foodDto = FoodDto.builder()
-                        .id(food.getId())
-                        .name(food.getName())
-                        .price(food.getPrice())
-                        .open(!food.isOpen())
-                        .category(food.getCategory())
-                        .build();
-                food.update(foodDto);
-            }
-        }
-        return foods;
+    public Food UpdateOpenFood(Long restaurantId,Long id){
+        Food food = foodRepository.findByRestaurantIdAndId(restaurantId,id);
+        System.out.println(food.isOpen());
+        FoodDto foodDto = FoodDto.builder()
+                .id(food.getId())
+                .name(food.getName())
+                .price(food.getPrice())
+                .open(!food.isOpen())
+                .category(food.getCategory())
+                .build();
+        System.out.println(foodDto.isOpen());
+        food.update(foodDto);
+        foodRepository.save(food);
+        System.out.println(food.isOpen());
+        return food;
     }
 }
